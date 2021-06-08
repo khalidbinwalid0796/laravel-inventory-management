@@ -12,15 +12,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-// Frontend Routes
-Route::get('/', 'Frontend\PagesController@index')->name('index');
-Route::get('/about', 'Frontend\PagesController@about')->name('about');
-Route::get('/contact', 'Frontend\PagesController@contact')->name('contact');
-
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
 
 // User Routes
 Route::group(['prefix' => 'user'], function(){
