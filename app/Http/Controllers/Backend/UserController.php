@@ -5,12 +5,31 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-
+use DB;
 class UserController extends Controller
 {
-  public function index(){
+  public function index(Request $request){
   	$users = User::all();
   	return view('backend.pages.users.index', compact('users'));
+  }
+
+  public function filter(Request $request){
+    //$users = User::all();
+    //$type=$request->usertype;
+    $users = User::where('usertype',Request::input('usertype'))->get();
+    return view('backend.pages.users.index', compact('users'));
+  }
+
+  public function userSearch(Request $request){
+      $search_key=$request->search_key;
+      $usertype=$request->usertype;
+      $date=date('Y-m-d', strtotime($request->date));
+      $users=DB::table('users')
+                ->orWhere('name','LIKE', "%{$search_key}%")
+                ->orWhere('usertype',$usertype)
+                ->orWhere('created_at',$date)
+                ->paginate(1);
+      return view('backend.pages.users.index', compact('users'));
   }
 
 	public function create(){

@@ -2,17 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
@@ -20,6 +9,8 @@ Route::get('/', 'HomeController@index')->name('home');
 // User Routes
 Route::group(['prefix' => 'user'], function(){
   	Route::get('/', 'Backend\UserController@index')->name('user.view');
+  	//Route::get('/filter', 'Backend\UserController@filter')->name('user.filter');
+  	 Route::get('search', 'Backend\UserController@userSearch')->name('user.search');
 	Route::get('/create', 'Backend\UserController@create')->name('user.create');
 	Route::get('/edit/{id}', 'Backend\UserController@edit')->name('user.edit');
 	Route::post('/store', 'Backend\UserController@store')->name('user.store');
@@ -141,3 +132,9 @@ Route::group(['prefix' => 'stock'], function(){
 	Route::get('/report/product/wise/pdf', 'Backend\StocksController@productWisePdf')->name('stock.report.product.wise.pdf');
 });
 
+//Multirow CRUD(practise)
+Route::get('/multirow/create','Backend\MultiRowInsertController@create');
+Route::get('/multirow/index','Backend\MultiRowInsertController@index');
+Route::post('/multirow/store','Backend\MultiRowInsertController@store')->name('row.store');
+Route::get('/multirow/edit/{orders_id}','Backend\MultiRowInsertController@edit')->name('row.edit');
+Route::post('/multirow/update','Backend\MultiRowInsertController@update')->name('row.update');

@@ -70,13 +70,14 @@
           <tbody>
             @php
               $total_sum = '0';
+              $i=1;
             @endphp
-            @foreach($invoice['invoice_details'] as $key => $details)
+            @foreach($invoice['invoice_details'] as $details)
             <tr class="text-center">
               <input type="hidden" name="category_id[]" value="{{$details->category_id}}">
               <input type="hidden" name="product_id[]" value="{{$details->product_id}}">
-              <input type="hidden" name="selling_qty[{{$details->id}}]" value="{{$details->selling_qty}}">              
-              <td>{{ $key+1 }}</td>
+              <input type="text" name="selling_qty[]" value="{{$details->id}}">              
+              <td>{{ $i++ }}</td>
               <td>{{ $details['category']['name'] }}</td>
               <td>{{ $details['product']['name'] }}</td>
               <td class="text-center" style="background-color: #ddd;padding: 1px;">{{ $details['product']['quantity'] }}</td>

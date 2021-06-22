@@ -12,7 +12,7 @@ use Auth;
 class ProductsController extends Controller
 {
 	public function index(){
-		$products = Product::all();
+		$products = Product::orderBy('id', 'asc')->paginate(5);
 		return view('backend.pages.products.index', compact('products'));
 	}
 

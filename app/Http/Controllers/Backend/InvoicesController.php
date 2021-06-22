@@ -128,6 +128,7 @@ class InvoicesController extends Controller
 	}
 
 	public function approve($id){
+		// For showing Multiple rows 
 		$invoice = Invoice::with(['invoice_details'])->find($id);
 		return view('backend.pages.invoices.approve', compact('invoice'));
 	}
@@ -159,24 +160,27 @@ class InvoicesController extends Controller
 
 	    return redirect()->route('invoice.pending')->with('success','Invoice successfully approved');
 	*/
-		foreach($request->selling_qty as $key => $val) {
-			$invoice_details = InvoiceDetail::where('id',$key)->first();
+
+        $count_sqty = count($request->selling_qty);
+            for($i=0;$i<$count_sqty;$i++){
+			$invoice_details = InvoiceDetail::where('id',$request->selling_qty[$i])->first();
 			$product = Product::where('id',$invoice_details->product_id)->first();
-			if($product->quantity < $request->selling_qty[$key]){
+			if($product->quantity < $invoice_details->selling_qty){
 				return redirect()->back()->with('success','Sorry! You approve maximum value');
 			}
-		}
+        }
 
 		$invoice = Invoice::find($id);
 		$invoice->approved_by = Auth::user()->id;
 		$invoice->status = '1';
 		DB::transaction(function() use($request,$invoice,$id){
-			foreach($request->selling_qty as $key => $val) {
-				$invoice_details = InvoiceDetail::where('id',$key)->first();
+        $count_sqty = count($request->selling_qty);
+            for($i=0;$i<$count_sqty;$i++){
+				$invoice_details = InvoiceDetail::where('id',$request->selling_qty[$i])->first();
 				$invoice_details->status = '1';
 				$invoice_details->save();
 				$product = Product::where('id',$invoice_details->product_id)->first();
-				$product->quantity = ((float)$product->quantity)-((float)$request->selling_qty[$key]);
+				$product->quantity = ((float)$product->quantity)-((float)$invoice_details->selling_qty);
 				$product->save();
 				}
 			$invoice->save();

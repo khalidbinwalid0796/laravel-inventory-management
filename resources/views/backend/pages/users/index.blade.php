@@ -1,5 +1,4 @@
 @extends('backend.layouts.master')
-
 @section('content')
     <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -34,6 +33,39 @@
                 <h3>User List
                   <a class="btn btn-success float-sm-right" href="{{ route('user.create') }}"><i class="fa fa-plus-circle"></i>Add User</a>
                 </h3>
+
+          <form action="{{ route('user.search') }}" method="get">
+            <div class="row">
+            <div class="form-group col-md-4">
+            <input type="search" class="header_search_input" name="search_key" placeholder="Search for products...">
+          </div>
+            <div class="form-group col-md-4">
+              <label for="exampleInputPassword1">User Role</label>
+              <select class="form-control" name="usertype">
+                @if(isset($_GET['usertype']))
+                <option value="{{ $_GET['usertype'] }}">{{ $_GET['usertype'] }}</option>
+                <option value="">Select Role</option>
+                <option value="Admin">Admin</option>
+                <option value="User">User</option>
+                @else
+                <option value="">Select Role</option>
+                <option value="Admin">Admin</option>
+                <option value="User">User</option>
+                @endif
+
+              </select>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label>Date</label>
+              <input type="text" name="date" class="form-control-sm datepicker" placeholder="YYYY-MM-DD">
+            </div>
+
+          
+</div>
+  <input type="submit" value="submit" name="submit">
+          </form>
+
               </div><!-- /.card-header -->
       <div class="card-body">
         <table id="example1" class="table table-bordered table-hover"  >
@@ -61,7 +93,7 @@
                 <a title="Edit" class="btn btn-sm btn-primary" href="{{ route('user.edit', $user->id) }}"><i class="fa fa-edit"></i></a>
 
                 <a href="#deleteModal{{ $user->id }}" data-toggle="modal" class="btn btn-danger">Delete</a>
-
+                 <!--  delete modal -->
                   <div class="modal fade" id="deleteModal{{ $user->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
@@ -101,4 +133,12 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+
+    <script>
+      $('.datepicker').datepicker({
+          uiLibrary: 'bootstrap4',
+          format :'yyyy-mm-dd'
+      });
+  </script>
 @endsection
+
